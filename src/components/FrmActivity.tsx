@@ -1,58 +1,42 @@
-import React from "react";
-import { useReducer } from "react";
+import { useState, useCallback, useContext } from "react";
+import { TareasContext } from "./TareasContext";
 
-export default function FrmActivity(props: any){
+function FrmActivity({ setFrmActive }: any) {
+  const [nombreTarea, setNombreTarea] = useState("");
+  const { dispatch } = useContext(TareasContext);
 
-    const [listado, setListado] = useReducer((state: any, newState: any) => ({...state, ...newState}), {
-        actividades: [
-            {
-                id: 1,
-                nombre: 'Actividad 1',
-                estado: 'Por hacer'
-            },
-            {
-                id: 2,
-                nombre: 'Actividad 2',
-                estado: 'Haciendo'
-            },
-            {
-                id: 3,
-                nombre: 'Actividad 3',
-                estado: 'Completo'
-            }
-        ]
+  const agregarTarea = useCallback(() => {
+    if (nombreTarea === "") {
+      alert("Ingresa un valor");
+      return;
+    }
+
+    dispatch({
+      type: "agregar",
+      payload: { id: Date.now(), nombre: nombreTarea, estado: "Por hacer" },
     });
+    setNombreTarea("");
+  }, [nombreTarea, dispatch]);
 
-    const cerrarModal = () => {
-        props.setFrmActive(false);
-    }
-
-    const guardarRegistro = () => {
-
-        cerrarModal();
-    }
-
-    return (
-        <div>
-            <form className='max-h-[3rem] mb-6 flex flex-row justify-center items-center'>
-                <label className='font-semibold mr-4 text-white uppercase'>Nombre de la actividad: </label>
-                <input type="text" className='mr-4 h-[2rem] rounded-lg px-2 min-w-[30vw]' />
-                
-                <button 
-                className='px-4 h-[2rem] py-2 bg-green-500 mr-4
-                rounded-xl font-semibold uppercase text-center text-black flex justify-center items-center'
-                onClick={ guardarRegistro }
-                >
-                    Guardar 
-                </button>
-                <button 
-                className='px-4 h-[2rem] py-2 bg-red-500 
-                rounded-xl font-semibold uppercase text-center text-black flex justify-center items-center'
-                onClick={ cerrarModal }
-                >
-                    Cancelar 
-                </button>
-            </form>
-        </div>
-    )
+  return (
+    <form
+      className="px-6 py-4 bg-[#155E75] mb-6 rounded-xl font-semibold uppercase gap-4 flex"
+      onSubmit={(e) => {
+        e.preventDefault();
+        agregarTarea();
+      }}
+    >
+      <input
+        className="px-4 rounded-md outline-none"
+        type="text"
+        value={nombreTarea}
+        onChange={(e) => setNombreTarea(e.target.value)}
+      />
+      <button type="submit" className="bg-green-400 rounded-lg px-4 py-[2px]">
+        Agregar tarea
+      </button>
+    </form>
+  );
 }
+
+export default FrmActivity;

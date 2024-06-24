@@ -1,13 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import { TareasProvider } from "./components/TareasContext"; // Asegúrate de tener la ruta correcta al archivo
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
+ReactDOM.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <TareasProvider>
+      <App />
+    </TareasProvider>
+  </React.StrictMode>,
+  document.getElementById("root")
 );
