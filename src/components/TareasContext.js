@@ -1,6 +1,5 @@
-import React, { createContext, useReducer } from "react";
+import { createContext, useReducer } from "react";
 
-// Estado inicial definido anteriormente
 const initialState = {
   tareas: [
     { id: 1, nombre: "Tarea 1", estado: "Por hacer" },
@@ -9,7 +8,6 @@ const initialState = {
   ],
 };
 
-// Reducer definido anteriormente
 function reducer(state, action) {
   switch (action.type) {
     case "agregar":

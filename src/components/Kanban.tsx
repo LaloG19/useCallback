@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import { TareasContext } from "./TareasContext";
 
 const Kanban: React.FC = () => {
@@ -10,6 +10,18 @@ const Kanban: React.FC = () => {
   ) => {
     dispatch({ type: "mover", payload: { id, nuevoEstado } });
   };
+  
+  const totalTareasPorHacer = useMemo(() => {
+    return state.tareas.filter((tarea: any) => tarea.estado === "Por hacer").length;
+  }, [state.tareas]);
+
+  const totalTareasHaciendo = useMemo(() => {
+    return state.tareas.filter((tarea: any) => tarea.estado === "Haciendo").length;
+  }, [state.tareas]);
+
+  const totalTareasCompletado = useMemo(() => {
+    return state.tareas.filter((tarea: any) => tarea.estado === "Completado").length;
+  }, [state.tareas]);
 
   const eliminarTarea = (id: number) => {
     dispatch({ type: "eliminar", payload: { id } });
@@ -62,6 +74,10 @@ const Kanban: React.FC = () => {
               </div>
             </div>
           ))}
+
+          <span className="flex justify-center items-center w-full">
+            {totalTareasPorHacer} tareas por hacer
+          </span>
       </div>
       <div
         style={{
@@ -102,6 +118,10 @@ const Kanban: React.FC = () => {
               </div>
             </div>
           ))}
+
+          <span className="flex justify-center items-center w-full">
+            {totalTareasHaciendo} tareas por hacer
+          </span>
       </div>
       <div
         style={{
@@ -134,6 +154,10 @@ const Kanban: React.FC = () => {
               </button>
             </div>
           ))}
+
+          <span className="flex justify-center items-center w-full">
+            {totalTareasCompletado} tareas por hacer
+          </span>
       </div>
     </div>
   );
